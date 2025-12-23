@@ -2,6 +2,8 @@ const SIDE = 513;
 const SIZE = SIDE * SIDE;
 const ITERATIONS = 9;
 
+const R = 0.6;
+
 const generateArray = (length, getItem) => {
   const array = [];
 
@@ -16,8 +18,6 @@ const generateArray = (length, getItem) => {
 // min <= rnd <= max
 const getRandomInt = (min, max) =>
   Math.floor((max - min + 1) * Math.random()) + min;
-
-const getRandomHeight = () => getRandomInt(0, 1024);
 
 const getZero = () => 0;
 
@@ -40,7 +40,8 @@ const diamondStep = (heights, i) => {
       const i3 = getIndex(x1, y1, SIDE);
   
       const ci = getIndex(x0 + halfOffset, y0 + halfOffset, SIDE);
-      heights[ci] = (heights[i0] + heights[i1] + heights[i2] + heights[i3]) / 4;
+      const v = (heights[i0] + heights[i1] + heights[i2] + heights[i3]) / 4;
+      heights[ci] = v + (2 * R * Math.random() - R) ** (i + 1);
     }
   }
 };
@@ -80,7 +81,7 @@ const squareStep = (heights, i) => {
       const ci = getIndex(x, y, SIDE);
 
       const v = ni.reduce((h, i) => h + heights[i], 0) / ni.length;
-      heights[ci] = v;
+      heights[ci] = v + (2 * R * Math.random() - R) ** (i + 1);
     }
   }
 
@@ -89,10 +90,10 @@ const squareStep = (heights, i) => {
 
 const generateMap = () => {
   const heights = generateArray(SIZE, getZero);
-  heights[0] = 1;
-  heights[SIDE - 1] = 3;
-  heights[SIZE - SIDE] = 3;
-  heights[SIZE - 1] = 1;
+  heights[0] = Math.random();
+  heights[SIDE - 1] = Math.random();
+  heights[SIZE - SIDE] = Math.random();
+  heights[SIZE - 1] = Math.random();
 
   for (let i = 0; i < ITERATIONS; i++) {
     diamondStep(heights, i);
