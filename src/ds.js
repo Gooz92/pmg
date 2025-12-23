@@ -1,25 +1,10 @@
+import { generateArray, getZero } from './utils';
+
 const SIDE = 513;
 const SIZE = SIDE * SIDE;
 const ITERATIONS = 9;
 
 const R = 0.6;
-
-const generateArray = (length, getItem) => {
-  const array = [];
-
-  for (let i = 0; i < length; i++) {
-    const item = getItem(i);
-    array.push(item);
-  }
-
-  return array;
-};
-
-// min <= rnd <= max
-const getRandomInt = (min, max) =>
-  Math.floor((max - min + 1) * Math.random()) + min;
-
-const getZero = () => 0;
 
 const getDiamondOffset = (side, i) => (side - 1) / 2 ** i;
 
@@ -124,23 +109,6 @@ const normalize = values => {
     values[i] = Math.floor(256 * (values[i] - min) / (max - min));
   }
   return values;
-}
+};
 
-console.time('t');
-const heights = normalize(generateMap());
-console.timeEnd('t');
-
-const ctx = canv.getContext('2d');
-
-const imageData = ctx.createImageData(canv.width, canv.height);
-
-for (let i = 0; i < SIZE; i++) {
-  const i0 = i * 4;
-  imageData.data[i0] = 0;
-  imageData.data[i0 + 1] = 0;
-  imageData.data[i0 + 2] = 0;
-  imageData.data[i0 + 3] = heights[i];
-}
-
-
-ctx.putImageData(imageData, 0, 0);
+export const generateGrayHeightMap = () => normalize(generateMap());

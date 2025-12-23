@@ -1,0 +1,25 @@
+{
+  "name": "pmg",
+  "version": "0.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "node build",
+    "build:dev": "node build --dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gooz92/pmg.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gooz92/pmg/issues"
+  },
+  "homepage": "https://github.com/Gooz92/pmg#readme",
+  "description": "",
+  "devDependencies": {
+    "esbuild": "^0.27.2"
+  }
+}
