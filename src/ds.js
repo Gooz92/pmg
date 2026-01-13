@@ -10,7 +10,7 @@ const getDiamondOffset = (side, i) => (side - 1) / 2 ** i;
 
 const getIndex = (x, y, width) => x + y * width;
 
-const diamondStep = (heights, i) => {
+const diamondStep = (heights, i, getRandom) => {
   const offset = getDiamondOffset(SIDE, i);
   const halfOffset = offset / 2;
   const maxXY = SIDE - 1;
@@ -26,7 +26,7 @@ const diamondStep = (heights, i) => {
   
       const ci = getIndex(x0 + halfOffset, y0 + halfOffset, SIDE);
       const v = (heights[i0] + heights[i1] + heights[i2] + heights[i3]) / 4;
-      heights[ci] = v + (2 * R * Math.random() - R) ** (i + 1);
+      heights[ci] = v + (2 * R * getRandom() - R) ** (i + 1);
     }
   }
 };
@@ -56,7 +56,7 @@ const getSquareNeighbors = (x, y, offset) => {
   return [ getIndex(left, y, SIDE), getIndex(x, top, SIDE), getIndex(right, y, SIDE), getIndex(x, bottom, SIDE) ];
 };
 
-const squareStep = (heights, i) => {
+const squareStep = (heights, i, getRandom) => {
   const offset = getDiamondOffset(SIDE, i);
   const halfOffset = offset / 2;
 
@@ -66,23 +66,23 @@ const squareStep = (heights, i) => {
       const ci = getIndex(x, y, SIDE);
 
       const v = ni.reduce((h, i) => h + heights[i], 0) / ni.length;
-      heights[ci] = v + (2 * R * Math.random() - R) ** (i + 1);
+      heights[ci] = v + (2 * R * getRandom() - R) ** (i + 1);
     }
   }
 
   return heights;
 };
 
-const generateMap = () => {
+const generateMap = (getRandom) => {
   const heights = generateArray(SIZE, getZero);
-  heights[0] = Math.random();
-  heights[SIDE - 1] = Math.random();
-  heights[SIZE - SIDE] = Math.random();
-  heights[SIZE - 1] = Math.random();
+  heights[0] = getRandom();
+  heights[SIDE - 1] = getRandom();
+  heights[SIZE - SIDE] = getRandom();
+  heights[SIZE - 1] = getRandom();
 
   for (let i = 0; i < ITERATIONS; i++) {
-    diamondStep(heights, i);
-    squareStep(heights, i);
+    diamondStep(heights, i, getRandom);
+    squareStep(heights, i, getRandom);
   }
 
   return heights;
@@ -111,4 +111,4 @@ const normalize = values => {
   return values;
 };
 
-export const generateGrayHeightMap = () => normalize(generateMap());
+export const generateGrayHeightMap = (getRandom) => normalize(generateMap(getRandom));
