@@ -14,3 +14,6 @@ export const getRandomInt = (min, max) =>
   Math.floor((max - min + 1) * Math.random()) + min;
 
 export const getZero = () => 0;
+
+export const formatSeed = rawSeed => rawSeed.toString(16).padStart(8, '0');
+

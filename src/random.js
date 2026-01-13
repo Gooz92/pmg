@@ -1,5 +1,5 @@
 
-const MAX = 4294967296; // 2 ** 32;
+export const MAX = 4294967296; // 2 ** 32;
 
 // mulberry32 implementation
 // 0 <= r < 2 ** 32
