@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+export default data =>
+`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -16,9 +17,17 @@
     .error {
       color: red;
     }
+
+    #version {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      margin: 8px;
+    }
   </style>
 </head>
 <body>
+<span id="version">${data.versionInfo}</span>
 <script src="app.js"></script>
 </body>
-</html>
+</html>`;
