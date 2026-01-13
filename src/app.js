@@ -1,4 +1,5 @@
 import { generateGrayHeightMap } from './ds.js';
+import { createRandom } from './random.js';
 
 const ctx = canv.getContext('2d');
 
@@ -18,4 +19,6 @@ const draw = (ctx, grayMap) => {
   ctx.putImageData(imageData, 0, 0);
 };
 
-draw(ctx, generateGrayHeightMap());
+const random = createRandom(42);
+
+draw(ctx, generateGrayHeightMap(random));
