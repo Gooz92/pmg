@@ -1,5 +1,6 @@
 import { generateGrayHeightMap } from './ds.js';
 import { createRandom } from './random.js';
+import { roughnessInput } from './roughness-input.js';
 import { seedForm } from './seed-form.js';
 import { getDefaultSeed, isRawSeedValid, formatSeed } from './seed-utils.js';
 
@@ -67,7 +68,7 @@ const mainPageRenderer = () => {
 
   return seed => {
     if (!canvas.isConnected) {
-      document.body.append(canvas, seedFormComponent.element);
+      document.body.append(canvas, seedFormComponent.element, roughnessInput());
     }
     const random = createRandom(seed);
     draw(ctx, generateGrayHeightMap(random));
