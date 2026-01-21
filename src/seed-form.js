@@ -20,6 +20,7 @@ export const seedForm = (onSubmit) => {
   };
 
   const input = document.createElement('input');
+  input.name = 'seed';
   input.pattern = SEED_PATTERN.source;
   input.required = true;
 

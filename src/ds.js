@@ -1,35 +1,13 @@
 import { generateArray, getZero } from './utils';
 
 const SIDE = 513;
-const SIZE = SIDE * SIDE;
 const ITERATIONS = 9;
 
 const R = 0.6;
 
-const getDiamondOffset = (side, i) => (side - 1) / 2 ** i;
+const getStepOffset = (side, i) => (side - 1) / 2 ** i;
 
 const getIndex = (x, y, width) => x + y * width;
-
-const diamondStep = (heights, i, getRandom) => {
-  const offset = getDiamondOffset(SIDE, i);
-  const halfOffset = offset / 2;
-  const maxXY = SIDE - 1;
-
-  for (let x0 = 0; x0 < maxXY; x0 += offset) {
-    const x1 = x0 + offset;
-    for (let y0 = 0; y0 < maxXY; y0 += offset) {
-      const y1 = y0 + offset;
-      const i0 = getIndex(x0, y0, SIDE);
-      const i1 = getIndex(x1, y0, SIDE);
-      const i2 = getIndex(x0, y1, SIDE);
-      const i3 = getIndex(x1, y1, SIDE);
-  
-      const ci = getIndex(x0 + halfOffset, y0 + halfOffset, SIDE);
-      const v = (heights[i0] + heights[i1] + heights[i2] + heights[i3]) / 4;
-      heights[ci] = v + (2 * R * getRandom() - R) ** (i + 1);
-    }
-  }
-};
 
 const getSquareNeighbors = (x, y, offset) => {
   const left = x - offset;
@@ -56,8 +34,7 @@ const getSquareNeighbors = (x, y, offset) => {
   return [ getIndex(left, y, SIDE), getIndex(x, top, SIDE), getIndex(right, y, SIDE), getIndex(x, bottom, SIDE) ];
 };
 
-const squareStep = (heights, i, getRandom) => {
-  const offset = getDiamondOffset(SIDE, i);
+const squareStep = (heights, offset, getHeightDelta) => {
   const halfOffset = offset / 2;
 
   for (let y = 0; y < SIDE; y += halfOffset) {
@@ -66,23 +43,56 @@ const squareStep = (heights, i, getRandom) => {
       const ci = getIndex(x, y, SIDE);
 
       const v = ni.reduce((h, i) => h + heights[i], 0) / ni.length;
-      heights[ci] = v + (2 * R * getRandom() - R) ** (i + 1);
+      heights[ci] = v + getHeightDelta();
     }
   }
 
   return heights;
 };
 
-const generateMap = (getRandom) => {
-  const heights = generateArray(SIZE, getZero);
+const diamondStep = (heights, offset, getHeightDelta) => {
+  const halfOffset = offset / 2;
+  const maxXY = SIDE - 1;
+
+  for (let x0 = 0; x0 < maxXY; x0 += offset) {
+    const x1 = x0 + offset;
+    for (let y0 = 0; y0 < maxXY; y0 += offset) {
+      const y1 = y0 + offset;
+      const i0 = getIndex(x0, y0, SIDE);
+      const i1 = getIndex(x1, y0, SIDE);
+      const i2 = getIndex(x0, y1, SIDE);
+      const i3 = getIndex(x1, y1, SIDE);
+  
+      const ci = getIndex(x0 + halfOffset, y0 + halfOffset, SIDE);
+      const v = (heights[i0] + heights[i1] + heights[i2] + heights[i3]) / 4;
+      heights[ci] = v + getHeightDelta();
+    }
+  }
+};
+
+const getInitialHeights = (side, getRandom) => {
+  const size = side * side;
+  const heights = generateArray(size, getZero);
+
   heights[0] = getRandom();
-  heights[SIDE - 1] = getRandom();
-  heights[SIZE - SIDE] = getRandom();
-  heights[SIZE - 1] = getRandom();
+  heights[side - 1] = getRandom();
+  heights[size - side] = getRandom();
+  heights[size - 1] = getRandom();
+
+  return heights;
+};
+
+const generateMap = (getRandom, roughness) => {
+  const heights = getInitialHeights(SIDE, getRandom);
+
+  const getHeightIterationHeightDelta = iteration =>
+    (roughness * (2 * getRandom() - 1)) ** (iteration + 1);
 
   for (let i = 0; i < ITERATIONS; i++) {
-    diamondStep(heights, i, getRandom);
-    squareStep(heights, i, getRandom);
+    const getHeightDelta = () => getHeightIterationHeightDelta(i);
+    const offset = getStepOffset(SIDE, i);
+    diamondStep(heights, offset, getHeightDelta);
+    squareStep(heights, offset, getHeightDelta);
   }
 
   return heights;
@@ -111,4 +121,4 @@ const normalize = values => {
   return values;
 };
 
-export const generateGrayHeightMap = (getRandom) => normalize(generateMap(getRandom));
+export const generateGrayHeightMap = (getRandom) => normalize(generateMap(getRandom, R));
