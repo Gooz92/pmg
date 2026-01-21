@@ -1,7 +1,8 @@
 import { cleanPlugin } from './clean.js';
-import { copyPlugin } from './copy.js';
+import { writePlugin } from './write-plugin.js';
+import indexTemplate from '../src/index.template.js';
 
-export const getConfig = ({ dev }) => ({
+export const getConfig = ({ dev, versionInfo }) => ({
   entryPoints: [ 'src/app.js' ],
   bundle: true,
   outdir: 'dist',
@@ -10,8 +11,6 @@ export const getConfig = ({ dev }) => ({
   sourcemap: dev,
   plugins: [
     cleanPlugin(),
-    copyPlugin(
-      [ 'src/index.html', 'dist/index.html' ]
-    )
+    writePlugin(indexTemplate({ versionInfo }), 'dist/index.html')
   ]
 });
