@@ -21,5 +21,8 @@
   "description": "",
   "devDependencies": {
     "esbuild": "^0.27.2"
+  },
+  "dependencies": {
+    "@gooz92/ce": "0.0.1"
   }
 }

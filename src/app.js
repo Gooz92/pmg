@@ -1,3 +1,5 @@
+import $ from '@gooz92/ce';
+
 import { generateGrayHeightMap } from './ds.js';
 import { createRandom } from './random.js';
 import { seedForm } from './seed-form.js';
@@ -32,7 +34,7 @@ const onSeed = listener => {
       document.body.innerHTML = `<h1 class="error">Invalid seed: '${rawSeed}'</h1>`;
       hasError = true;
     } else {
-      if (hasError) {
+      if (hasError) { 
         hasError = false;
         document.body.innerHTML = '';
       }
@@ -54,11 +56,7 @@ const onSeed = listener => {
 };
 
 const mainPageRenderer = () => {
-  const canvas = document.createElement('canvas');
-
-  canvas.width = 513;
-  canvas.height = 513;
-
+  const canvas = $('canvas', { width: 513, height: 513 });
   const ctx = canvas.getContext('2d');
 
   const seedFormComponent = seedForm(seed => {
