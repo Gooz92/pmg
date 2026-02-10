@@ -2,11 +2,10 @@ import $ from "@gooz92/ce";
 
 import { getDefaultSeed, SEED_PATTERN, formatSeed } from "./seed-utils";
 
-export const seedForm = (onSubmit: (seed: string) => void) => {
-
-  let initialSeed;
+export const seedForm = (initialSeed: string, onSubmit: (seed: string) => void) => {
 
   const input = $('input', {
+    value: initialSeed,
     name: 'seed',
     pattern: SEED_PATTERN.source,
     required: true,

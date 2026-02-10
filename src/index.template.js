@@ -28,6 +28,6 @@ export default data =>
 </head>
 <body>
 <span id="version">${data.versionInfo}</span>
-<script src="app.js"></script>
+<script src="index.js"></script>
 </body>
 </html>`;
