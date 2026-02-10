@@ -1,15 +1,14 @@
 import $ from '@gooz92/ce';
 
-import { generateGrayHeightMap } from './ds.js';
-import { createRandom } from './random.js';
-import { seedForm } from './seed-form.js';
-import { getDefaultSeed, isRawSeedValid, formatSeed } from './seed-utils.js';
+import { generateGrayHeightMap } from './ds';
+import { createRandom } from './random';
+import { seedForm } from './seed-form';
+import { getDefaultSeed, isRawSeedValid, formatSeed } from './seed-utils';
 
-const parseSeed = rawSeed => {
-  return parseInt(rawSeed, 16);
-};
+const parseSeed = (rawSeed: string) =>
+  parseInt(rawSeed, 16);
 
-const draw = (ctx, grayMap) => {
+const draw = (ctx: CanvasRenderingContext2D, grayMap: number[]) => {
   const { width, height } = ctx.canvas;
   const imageData = ctx.createImageData(width, height);
 
@@ -24,7 +23,7 @@ const draw = (ctx, grayMap) => {
   ctx.putImageData(imageData, 0, 0);
 };
 
-const onSeed = listener => {
+const onSeed = (listener: (seed: number) => void) => {
   let hasError = false;
 
   const handleSeedChanged = () => {
@@ -57,13 +56,13 @@ const onSeed = listener => {
 
 const mainPageRenderer = () => {
   const canvas = $('canvas', { width: 513, height: 513 });
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d')!;
 
   const seedFormComponent = seedForm(seed => {
     location.hash = seed;
   });
 
-  return seed => {
+  return (seed: number) => {
     if (!canvas.isConnected) {
       document.body.append(canvas, seedFormComponent.element);
     }

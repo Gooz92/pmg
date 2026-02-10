@@ -1,5 +1,5 @@
-export const generateArray = (length, getItem) => {
-  const array = [];
+export const generateArray = <T> (length: number, getItem: (index: number) => T): T[] => {
+  const array: T[] = [];
 
   for (let i = 0; i < length; i++) {
     const item = getItem(i);
@@ -10,14 +10,14 @@ export const generateArray = (length, getItem) => {
 };
 
 // min <= rnd <= max
-export const getRandomInt = (min, max) =>
+export const getRandomInt = (min: number, max: number) =>
   Math.floor((max - min + 1) * Math.random()) + min;
 
-export const getZero = () => 0;
+export const getZero = (): 0 => 0;
 
-const format2d = n => String(n).padStart(2, '0');
+const format2d = (n: number) => String(n).padStart(2, '0');
 
-export const formatDate = date =>
+export const formatDate = (date: Date) =>
   [
     date.getFullYear(),
     format2d(date.getMonth() + 1),

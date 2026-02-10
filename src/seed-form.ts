@@ -2,7 +2,7 @@ import $ from "@gooz92/ce";
 
 import { getDefaultSeed, SEED_PATTERN, formatSeed } from "./seed-utils";
 
-export const seedForm = (onSubmit) => {
+export const seedForm = (onSubmit: (seed: string) => void) => {
 
   let initialSeed;
 
@@ -25,7 +25,7 @@ export const seedForm = (onSubmit) => {
     type: 'button',
     onclick: () => {
       input.value = formatSeed(getDefaultSeed());
-      handleSubmit(input.value);
+      handleSubmit();
     }
   });
 
@@ -33,17 +33,17 @@ export const seedForm = (onSubmit) => {
 
   const form = $('form', {
     noValidate: true,
-    onsubmit: e => {
+    onsubmit: (e: Event) => {
       e.preventDefault();
       if (form.checkValidity()) {
-        handleSubmit(input.value);
+        handleSubmit();
       }
     }
   }, [ input, refreshButton, submitButton ]);
 
   return {
     element: form,
-    update: seed => {
+    update: (seed: string) => {
       initialSeed = seed;
       input.value = seed;
     }
