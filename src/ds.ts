@@ -5,11 +5,11 @@ const ITERATIONS = 9;
 
 const R = 0.6;
 
-const getStepOffset = (side, i) => (side - 1) / 2 ** i;
+const getStepOffset = (side: number, i: number) => (side - 1) / 2 ** i;
 
-const getIndex = (x, y, width) => x + y * width;
+const getIndex = (x: number, y: number, width: number) => x + y * width;
 
-const getSquareNeighbors = (x, y, offset) => {
+const getSquareNeighbors = (x: number, y: number, offset: number) => {
   const left = x - offset;
 
   if (left < 0) {
@@ -34,7 +34,7 @@ const getSquareNeighbors = (x, y, offset) => {
   return [ getIndex(left, y, SIDE), getIndex(x, top, SIDE), getIndex(right, y, SIDE), getIndex(x, bottom, SIDE) ];
 };
 
-const squareStep = (heights, offset, getHeightDelta) => {
+const squareStep = (heights: number[], offset: number, getHeightDelta: () => number) => {
   const halfOffset = offset / 2;
 
   for (let y = 0; y < SIDE; y += halfOffset) {
@@ -50,7 +50,7 @@ const squareStep = (heights, offset, getHeightDelta) => {
   return heights;
 };
 
-const diamondStep = (heights, offset, getHeightDelta) => {
+const diamondStep = (heights: number[], offset: number, getHeightDelta: () => number) => {
   const halfOffset = offset / 2;
   const maxXY = SIDE - 1;
 
@@ -70,9 +70,9 @@ const diamondStep = (heights, offset, getHeightDelta) => {
   }
 };
 
-const getInitialHeights = (side, getRandom) => {
+const getInitialHeights = (side: number, getRandom: () => number) => {
   const size = side * side;
-  const heights = generateArray(size, getZero);
+  const heights: number[] = generateArray(size, getZero);
 
   heights[0] = getRandom();
   heights[side - 1] = getRandom();
@@ -82,7 +82,7 @@ const getInitialHeights = (side, getRandom) => {
   return heights;
 };
 
-const generateMap = (getRandom, roughness) => {
+const generateMap = (getRandom: () => number, roughness: number) => {
   const heights = getInitialHeights(SIDE, getRandom);
 
   const getHeightIterationHeightDelta = iteration =>
@@ -98,7 +98,7 @@ const generateMap = (getRandom, roughness) => {
   return heights;
 };
 
-const findMinMax = (items) => {
+const findMinMax = (items: number[]) => {
   let max = items[0];
   let min = items[0];
 
@@ -113,7 +113,7 @@ const findMinMax = (items) => {
   return [ max, min ];
 }
 
-const normalize = values => {
+const normalize = (values: number[]) => {
   const [ min, max ] = findMinMax(values);
   for (let i = 0; i < values.length; i++) {
     values[i] = Math.floor(256 * (values[i] - min) / (max - min));
@@ -121,4 +121,5 @@ const normalize = values => {
   return values;
 };
 
-export const generateGrayHeightMap = (getRandom) => normalize(generateMap(getRandom, R));
+export const generateGrayHeightMap = (getRandom: () => number) =>
+  normalize(generateMap(getRandom, R));

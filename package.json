@@ -4,8 +4,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "node build",
-    "build:dev": "node build --dev",
+    "build": "tsx build",
+    "build:dev": "npm run build -- --dev",
+    "type-check": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,7 +21,9 @@
   "homepage": "https://github.com/Gooz92/pmg#readme",
   "description": "",
   "devDependencies": {
-    "esbuild": "^0.27.2"
+    "esbuild": "^0.27.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@gooz92/ce": "0.0.2"
