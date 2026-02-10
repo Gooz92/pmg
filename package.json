@@ -1,6 +1,6 @@
 {
   "name": "pmg",
-  "version": "0.1.3",
+  "version": "0.2.0-dev",
   "main": "index.js",
   "type": "module",
   "scripts": {
