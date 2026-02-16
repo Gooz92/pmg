@@ -29,6 +29,6 @@ export default data =>
 <body>
 <div id="app-container"></div>
 <span id="version">${data.versionInfo}</span>
-<script src="index.js"></script>
+<script src="app.js"></script>
 </body>
 </html>`;
