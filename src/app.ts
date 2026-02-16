@@ -25,9 +25,9 @@ const renderGrayscale = (ctx: CanvasRenderingContext2D, grayscale: number[]) => 
   ctx.putImageData(imageData, 0, 0);
 };
 
-const drawHeightMap = (ctx: CanvasRenderingContext2D, rawSeed: string) => {
+const drawHeightMap = (ctx: CanvasRenderingContext2D, rawSeed: string, roughness: number) => {
   const random = createRandom(parseSeed(rawSeed));
-  renderGrayscale(ctx, generateGrayHeightMap(random));
+  renderGrayscale(ctx, generateGrayHeightMap(random, roughness / 100));
 };
 
 export const app = (params: HashParams, setParams: (params: Partial<HashParams>) => void) => {
@@ -35,15 +35,16 @@ export const app = (params: HashParams, setParams: (params: Partial<HashParams>)
   const ctx = canvas.getContext('2d')!;
 
   const seedFormComponent = seedForm(params.seed, seed => {
-    drawHeightMap(ctx, seed);
+    drawHeightMap(ctx, seed, +params.roughness);
     setParams({ seed });
   });
 
   const roughnessInputComponent = roughnessInput(+params.roughness, roughness => {
+    drawHeightMap(ctx, params.seed, roughness);
     setParams({ roughness: String(roughness) });
   });
 
-  drawHeightMap(ctx, params.seed);
+  drawHeightMap(ctx, params.seed, +params.roughness);
 
   const element = $('div', [
     canvas,
@@ -54,7 +55,7 @@ export const app = (params: HashParams, setParams: (params: Partial<HashParams>)
   return {
     element,
     update: (params: HashParams) => {
-      drawHeightMap(ctx, params.seed);
+      drawHeightMap(ctx, params.seed, +params.roughness);
       seedFormComponent.update(params.seed);
       roughnessInputComponent.update(+params.roughness);
     }

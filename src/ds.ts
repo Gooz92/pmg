@@ -3,8 +3,6 @@ import { generateArray, getZero } from './utils';
 const SIDE = 513;
 const ITERATIONS = 9;
 
-const R = 0.6;
-
 const getStepOffset = (side: number, i: number) => (side - 1) / 2 ** i;
 
 const getIndex = (x: number, y: number, width: number) => x + y * width;
@@ -121,5 +119,5 @@ const normalize = (values: number[]) => {
   return values;
 };
 
-export const generateGrayHeightMap = (getRandom: () => number) =>
-  normalize(generateMap(getRandom, R));
+export const generateGrayHeightMap = (getRandom: () => number, roughness: number) =>
+  normalize(generateMap(getRandom, roughness));
