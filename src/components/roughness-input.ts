@@ -8,7 +8,7 @@ type Props = {
 
 export const roughnessInput = ({ value, onInput, onChange }: Props) => {
   const input =  $('input', {
-    id: 'roughtness',
+    id: 'roughness',
     value,
     type: 'range',
     oninput: () => {
@@ -20,7 +20,7 @@ export const roughnessInput = ({ value, onInput, onChange }: Props) => {
   });
 
   const element = $('div', [
-    $('label', 'Roughness: ', { htmlFor: 'roughtness'}),
+    $('label', 'Roughness: ', { htmlFor: 'roughness'}),
     input
   ]);
 

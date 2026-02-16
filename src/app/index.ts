@@ -1,3 +1,3 @@
-import { hadleAppHashParams } from "./handle-app-hash-params";
+import { handleAppHashParams } from "./handle-app-hash-params";
 
-hadleAppHashParams();
+handleAppHashParams();

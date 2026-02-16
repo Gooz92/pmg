@@ -36,7 +36,7 @@ const validateParams = (params: HashParams) => {
   return errors;
 };
 
-export const hadleAppHashParams = () => {
+export const handleAppHashParams = () => {
   handleHashParams(
     initialParams,
     (params, setParams) => {
