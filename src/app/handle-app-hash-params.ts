@@ -1,8 +1,7 @@
-import $ from "@gooz92/ce";
-
 import { app } from "./app";
-import { handleHashParams } from "./handle-hash-params";
-import { formatSeed, getDefaultSeed, isRawSeedValid } from "./seed-utils";
+import { handleHashParams } from "../handle-hash-params";
+import { formatSeed, getDefaultSeed, isRawSeedValid } from "../seed-utils";
+import { errorPage } from "./error-page";
 
 let appComponent: ReturnType<typeof app> | null = null;
 
@@ -36,12 +35,6 @@ const validateParams = (params: HashParams) => {
 
   return errors;
 };
-
-const errorPage = (errors: string[]) =>
-  $('div', { className: 'error' }, [
-    $('h1', 'Error with parsing params'),
-    $('ul', errors.map(error => $('li', error)))
-  ]);
 
 export const hadleAppHashParams = () => {
   handleHashParams(

@@ -1,7 +1,7 @@
 import { writeFileSync } from 'fs';
 
 export const writePlugin = (content, dest) => ({
-  name: 'processTemplate',
+  name: 'write',
   setup: build => {
     build.onEnd(() => {
       writeFileSync(dest, content);

@@ -8,3 +8,6 @@ export const SEED_PATTERN = /^[\da-f]{8}$/;
 export const isRawSeedValid = (rawSeed: string) => SEED_PATTERN.test(rawSeed);
 
 export const formatSeed = (seed: number) => seed.toString(16).padStart(8, '0');
+
+export const parseSeed = (rawSeed: string) =>
+  parseInt(rawSeed, 16);

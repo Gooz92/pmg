@@ -5,26 +5,7 @@ export default data =>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PMG</title>
-  <style>
-    #canv {
-      outline: 1px solid #aaa;
-    }
-
-    input:invalid {
-      background-color: #f66161;
-    }
-
-    .error {
-      color: red;
-    }
-
-    #version {
-      position: fixed;
-      bottom: 0;
-      right: 0;
-      margin: 8px;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 <div id="app-container"></div>
