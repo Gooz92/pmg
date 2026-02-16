@@ -39,9 +39,14 @@ export const app = (params: HashParams, setParams: (params: Partial<HashParams>)
     setParams({ seed });
   });
 
-  const roughnessInputComponent = roughnessInput(+params.roughness, roughness => {
-    drawHeightMap(ctx, params.seed, roughness);
-    setParams({ roughness: String(roughness) });
+  const roughnessInputComponent = roughnessInput({
+    value: +params.roughness,
+    onInput: roughness => {
+      drawHeightMap(ctx, params.seed, roughness);
+    },
+    onChange: roughness => {
+      setParams({ roughness: String(roughness) });
+    }
   });
 
   drawHeightMap(ctx, params.seed, +params.roughness);

@@ -7,9 +7,12 @@ export const handleHashParams = <T extends Record<string, string>> (config: Conf
 
   const currentParams = { ...config.initialParams };
   
+  let skip = false;
+
   const setParams = (params: Partial<T>) => {
     Object.assign(currentParams, params);
-    history.replaceState(null, '', '#' + new URLSearchParams(currentParams).toString());
+    skip = true;
+    location.hash = '#' + new URLSearchParams(currentParams).toString();
   };
 
   const handleParamsChange = (hash: string) => {
@@ -34,6 +37,10 @@ export const handleHashParams = <T extends Record<string, string>> (config: Conf
   }
 
   window.addEventListener('hashchange', () => {
+    if (skip) {
+      skip = false;
+      return;
+    }
     const rawParams = location.hash.slice(1);
     handleParamsChange(rawParams);
   });

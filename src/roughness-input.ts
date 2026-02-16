@@ -1,14 +1,20 @@
 import $ from "@gooz92/ce";
 
-export const roughnessInput = (
-  initialValue: number,
-  onChange: (value: number) => void
-) => {
+type Props = {
+  value: number,
+  onInput: (value: number) => void;
+  onChange: (value: number) => void;
+};
+
+export const roughnessInput = ({ value, onInput, onChange }: Props) => {
   const input =  $('input', {
     id: 'roughtness',
-    value: initialValue,
+    value,
     type: 'range',
     oninput: () => {
+      onInput(+input.value);
+    },
+    onchange: () => {
       onChange(+input.value);
     }
   });
