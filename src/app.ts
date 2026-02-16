@@ -3,77 +3,66 @@ import $ from '@gooz92/ce';
 import { generateGrayHeightMap } from './ds';
 import { createRandom } from './random';
 import { seedForm } from './seed-form';
-import { getDefaultSeed, isRawSeedValid, formatSeed } from './seed-utils';
+import { roughnessInput } from './roughness-input';
+import { HashParams } from './handle-app-hash-params';
 
 const parseSeed = (rawSeed: string) =>
   parseInt(rawSeed, 16);
 
-const draw = (ctx: CanvasRenderingContext2D, grayMap: number[]) => {
+const renderGrayscale = (ctx: CanvasRenderingContext2D, grayscale: number[]) => {
   const { width, height } = ctx.canvas;
   const imageData = ctx.createImageData(width, height);
 
-  for (let i = 0; i < grayMap.length; i++) {
+  for (let i = 0; i < grayscale.length; i++) {
     const i0 = i * 4;
-    imageData.data[i0] = 0;
-    imageData.data[i0 + 1] = 0;
-    imageData.data[i0 + 2] = 0;
-    imageData.data[i0 + 3] = grayMap[i];
+    const value = grayscale[i];
+    imageData.data[i0] = value;
+    imageData.data[i0 + 1] = value;
+    imageData.data[i0 + 2] = value;
+    imageData.data[i0 + 3] = 255;
   }
 
   ctx.putImageData(imageData, 0, 0);
 };
 
-const onSeed = (listener: (seed: number) => void) => {
-  let hasError = false;
-
-  const handleSeedChanged = () => {
-    const rawSeed = location.hash.slice(1);
-
-    if (!isRawSeedValid(rawSeed)) {
-      document.body.innerHTML = `<h1 class="error">Invalid seed: '${rawSeed}'</h1>`;
-      hasError = true;
-    } else {
-      if (hasError) { 
-        hasError = false;
-        document.body.innerHTML = '';
-      }
-      listener(parseSeed(rawSeed));
-    }
-  };
-
-  if (!location.hash || location.hash === '#') {
-    const seed = getDefaultSeed();
-    location.hash = formatSeed(seed);
-    listener(seed);
-  } else {
-    handleSeedChanged();
-  }
-
-  window.addEventListener('hashchange', () => {
-    handleSeedChanged();
-  });
+const drawHeightMap = (ctx: CanvasRenderingContext2D, rawSeed: string, roughness: number) => {
+  const random = createRandom(parseSeed(rawSeed));
+  renderGrayscale(ctx, generateGrayHeightMap(random, roughness / 100));
 };
 
-const mainPageRenderer = () => {
+export const app = (params: HashParams, setParams: (params: Partial<HashParams>) => void) => {
   const canvas = $('canvas', { width: 513, height: 513 });
   const ctx = canvas.getContext('2d')!;
 
-  const seedFormComponent = seedForm(seed => {
-    location.hash = seed;
+  const seedFormComponent = seedForm(params.seed, seed => {
+    drawHeightMap(ctx, seed, +params.roughness);
+    setParams({ seed });
   });
 
-  return (seed: number) => {
-    if (!canvas.isConnected) {
-      document.body.append(canvas, seedFormComponent.element);
+  const roughnessInputComponent = roughnessInput({
+    value: +params.roughness,
+    onInput: roughness => {
+      drawHeightMap(ctx, params.seed, roughness);
+    },
+    onChange: roughness => {
+      setParams({ roughness: String(roughness) });
     }
-    const random = createRandom(seed);
-    draw(ctx, generateGrayHeightMap(random));
-    seedFormComponent.update(formatSeed(seed));
+  });
+
+  drawHeightMap(ctx, params.seed, +params.roughness);
+
+  const element = $('div', [
+    canvas,
+    seedFormComponent.element,
+    roughnessInputComponent.element
+  ]);
+
+  return {
+    element,
+    update: (params: HashParams) => {
+      drawHeightMap(ctx, params.seed, +params.roughness);
+      seedFormComponent.update(params.seed);
+      roughnessInputComponent.update(+params.roughness);
+    }
   };
 };
-
-const renderMainPage = mainPageRenderer();
-
-onSeed(seed => {
-  renderMainPage(seed);
-});

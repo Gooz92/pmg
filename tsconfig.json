@@ -3,7 +3,7 @@
     "module": "ES2022",
     "moduleResolution": "Node",
     "esModuleInterop": true,
-    "lib": ["es2023", "dom"],
+    "lib": ["es2024", "dom", "DOM.Iterable"],
     "strictNullChecks": true,
     "target": "es2017"
   }

@@ -1,9 +1,9 @@
 import { rmSync } from 'fs';
 
-export const cleanPlugin = () => ({
+export const cleanPlugin = (dir) => ({
   name: 'clean',
   setup: (build) => {
-    const { outdir } = build.initialOptions;
+    const { outdir = dir } = build.initialOptions;
 
     if (!outdir) {
       return;
