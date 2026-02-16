@@ -1,13 +1,11 @@
 import $ from '@gooz92/ce';
 
-import { generateGrayHeightMap } from './ds';
-import { createRandom } from './random';
-import { seedForm } from './seed-form';
-import { roughnessInput } from './roughness-input';
+import { generateGrayHeightMap } from '../ds';
+import { createRandom } from '../random';
+import { seedForm } from '../components/seed-form';
+import { roughnessInput } from '../components/roughness-input';
 import { HashParams } from './handle-app-hash-params';
-
-const parseSeed = (rawSeed: string) =>
-  parseInt(rawSeed, 16);
+import { parseSeed } from '../seed-utils';
 
 const renderGrayscale = (ctx: CanvasRenderingContext2D, grayscale: number[]) => {
   const { width, height } = ctx.canvas;
@@ -31,7 +29,7 @@ const drawHeightMap = (ctx: CanvasRenderingContext2D, rawSeed: string, roughness
 };
 
 export const app = (params: HashParams, setParams: (params: Partial<HashParams>) => void) => {
-  const canvas = $('canvas', { width: 513, height: 513 });
+  const canvas = $('canvas', { id: 'canv', width: 513, height: 513 });
   const ctx = canvas.getContext('2d')!;
 
   const seedFormComponent = seedForm(params.seed, seed => {

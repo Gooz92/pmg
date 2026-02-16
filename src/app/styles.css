@@ -1,0 +1,27 @@
+body {
+  font-family: Tahoma, sans-serif;
+}
+
+#canv {
+  outline: 1px solid #aaa;
+}
+
+input:invalid {
+  background-color: #f66161;
+}
+
+.seed-form {
+  display: flex;
+  gap: 4px;
+}
+
+.error {
+  color: red;
+}
+
+#version {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 8px;
+}

@@ -1,6 +1,6 @@
 import $ from "@gooz92/ce";
 
-import { getDefaultSeed, SEED_PATTERN, formatSeed } from "./seed-utils";
+import { getDefaultSeed, SEED_PATTERN, formatSeed } from "../seed-utils";
 
 export const seedForm = (initialSeed: string, onSubmit: (seed: string) => void) => {
 
@@ -30,7 +30,7 @@ export const seedForm = (initialSeed: string, onSubmit: (seed: string) => void) 
 
   const submitButton = $('button', 'OK', { disabled: true });
 
-  const form = $('form', {
+  const form = $('form', { className: 'seed-form' }, {
     noValidate: true,
     onsubmit: (e: Event) => {
       e.preventDefault();
