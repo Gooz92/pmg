@@ -8,7 +8,9 @@ export const handleHashParams = <T extends Record<string, string>> (
 
   const setParams = (params: Partial<T>) => {
     Object.assign(currentParams, params);
+    // if params changes programatically assume they are valid and not trigger `handleParamsChange`
     skip = true;
+    // This creates additional entry in browser history, so user can use back button to go to prev params
     location.hash = new URLSearchParams(currentParams).toString();
   };
 
@@ -28,6 +30,7 @@ export const handleHashParams = <T extends Record<string, string>> (
     }
 
     if (needUpdate) {
+      // if params changed manually in url bar update location.hash without trigerring hashchange event listener
       history.replaceState(null, '', '#' + new URLSearchParams(currentParams).toString());
       onUpdate(currentParams, setParams);
     }

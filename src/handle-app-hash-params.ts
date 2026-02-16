@@ -6,6 +6,8 @@ import { formatSeed, getDefaultSeed, isRawSeedValid } from "./seed-utils";
 
 let appComponent: ReturnType<typeof app> | null = null;
 
+const appContainer = document.getElementById('app-container')!;
+
 const initialParams = {
   seed: formatSeed(getDefaultSeed()),
   roughness: String(50)
@@ -15,7 +17,7 @@ export type HashParams = typeof initialParams;
 
 const mount = (hashParams: HashParams, setParams: (params: Partial<HashParams>) => void) => {
   appComponent = app(hashParams, setParams);
-  document.body.appendChild(appComponent.element);
+  appContainer.appendChild(appComponent.element);
 };
 
 const isValidRoughness = (roughness: string) =>
@@ -36,7 +38,7 @@ const validateParams = (params: HashParams) => {
 };
 
 const errorPage = (errors: string[]) =>
-  $('div', [
+  $('div', { className: 'error' }, [
     $('h1', 'Error with parsing params'),
     $('ul', errors.map(error => $('li', error)))
   ]);
@@ -48,13 +50,13 @@ export const hadleAppHashParams = () => {
       const errors = validateParams(params);
       if (errors.length > 0) {
         appComponent = null;
-        document.body.innerHTML = ''
-        document.body.appendChild(errorPage(errors));
+        appContainer.innerHTML = ''
+        appContainer.appendChild(errorPage(errors));
         return;
       }
 
       if (appComponent === null) {
-        document.body.innerHTML = '';
+        appContainer.innerHTML = '';
         mount(params, setParams);
       } else {
         appComponent.update(params);
