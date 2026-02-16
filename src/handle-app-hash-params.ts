@@ -42,11 +42,12 @@ const errorPage = (errors: string[]) =>
   ]);
 
 export const hadleAppHashParams = () => {
-  handleHashParams({
+  handleHashParams(
     initialParams,
-    onUpdate: (params, setParams) => {
+    (params, setParams) => {
       const errors = validateParams(params);
       if (errors.length > 0) {
+        appComponent = null;
         document.body.innerHTML = ''
         document.body.appendChild(errorPage(errors));
         return;
@@ -59,5 +60,5 @@ export const hadleAppHashParams = () => {
         appComponent.update(params);
       }
     }
-  });
+  );
 };

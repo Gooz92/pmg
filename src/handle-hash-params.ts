@@ -1,18 +1,15 @@
-type Config <T extends Record<string, string>> = {
-  initialParams: T;
-  onUpdate: (params: T, setParams: (params: Partial<T>) => void) => void;
-};
-
-export const handleHashParams = <T extends Record<string, string>> (config: Config<T>) => {
-
-  const currentParams = { ...config.initialParams };
+export const handleHashParams = <T extends Record<string, string>> (
+  initialParams: T,
+  onUpdate: (params: T, setParams: (params: Partial<T>) => void) => void
+) => {
+  const currentParams = { ...initialParams };
   
   let skip = false;
 
   const setParams = (params: Partial<T>) => {
     Object.assign(currentParams, params);
     skip = true;
-    location.hash = '#' + new URLSearchParams(currentParams).toString();
+    location.hash = new URLSearchParams(currentParams).toString();
   };
 
   const handleParamsChange = (hash: string) => {
@@ -32,7 +29,7 @@ export const handleHashParams = <T extends Record<string, string>> (config: Conf
 
     if (needUpdate) {
       history.replaceState(null, '', '#' + new URLSearchParams(currentParams).toString());
-      config.onUpdate(currentParams, setParams);
+      onUpdate(currentParams, setParams);
     }
   }
 
